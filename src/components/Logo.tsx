@@ -6,6 +6,8 @@ type LogoProps = {
   placement: 'hero' | 'corner'
   animateWrite?: boolean
   onWriteComplete?: () => void
+  /** Draw the baseline flourish when settled in the corner (default true) */
+  showUnderline?: boolean
 }
 
 /** Full left→right write duration (seconds) */
@@ -60,6 +62,7 @@ export function Logo({
   placement,
   animateWrite = false,
   onWriteComplete,
+  showUnderline = true,
 }: LogoProps) {
   const strokeProgress = useMotionValue(0)
   const fillProgress = useMotionValue(0)
@@ -132,7 +135,7 @@ export function Logo({
           <span className="logo__layer logo__layer--fill">fontify</span>
         )}
 
-        {placement === 'corner' && (
+        {placement === 'corner' && showUnderline && (
           <motion.svg
             className="logo__underline"
             viewBox="0 0 260 24"
@@ -140,7 +143,7 @@ export function Logo({
             aria-hidden
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.2, delay: 0.55 }}
+            transition={{ duration: 0.2, delay: 0.12 }}
           >
             {/* Baseline flourish: sits under o-n-t-i, crosses f / f / y descenders */}
             <motion.path
@@ -153,9 +156,9 @@ export function Logo({
               initial={{ pathLength: 0 }}
               animate={{ pathLength: 1 }}
               transition={{
-                duration: 0.75,
+                duration: 0.65,
                 ease: [0.4, 0, 0.2, 1],
-                delay: 0.58,
+                delay: 0.15,
               }}
             />
             <defs>

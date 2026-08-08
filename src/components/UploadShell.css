@@ -1,0 +1,64 @@
+.upload-shell {
+  position: relative;
+  min-height: 100dvh;
+  padding:
+    max(0.85rem, env(safe-area-inset-top))
+    max(var(--space-page), env(safe-area-inset-right))
+    max(var(--space-page), env(safe-area-inset-bottom))
+    max(var(--space-page), env(safe-area-inset-left));
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: clamp(1.25rem, 3vh, 2rem);
+}
+
+.upload-shell__header {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: 3rem;
+}
+
+.upload-shell__back {
+  appearance: none;
+  border: none;
+  background: transparent;
+  justify-self: start;
+  min-height: var(--touch);
+  padding: 0.35rem 0.15rem;
+  font-weight: 500;
+  color: var(--ink-soft);
+  letter-spacing: -0.01em;
+}
+
+.upload-shell__back:hover {
+  color: var(--ink);
+}
+
+.upload-shell__title {
+  margin: 0;
+  justify-self: center;
+  text-align: center;
+  font-size: clamp(1.35rem, 3.2vw, 1.85rem);
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+}
+
+.upload-shell__logo {
+  justify-self: end;
+  line-height: 0;
+  /* Hide oversized padding from corner logo in tight header */
+  transform: scale(0.92);
+  transform-origin: right center;
+}
+
+.upload-shell__main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: min(100%, 52rem);
+  margin-inline: auto;
+  padding-bottom: clamp(1rem, 4vh, 2.5rem);
+}

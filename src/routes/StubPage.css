@@ -21,10 +21,10 @@
   line-height: 1.5;
 }
 
-.stub__kicker {
-  font-family: var(--font-brand);
-  font-size: 1.75rem;
-  color: var(--ink);
+.stub__logo {
+  line-height: 0;
+  width: fit-content;
+  margin-bottom: 0.35rem;
 }
 
 .stub__back {
