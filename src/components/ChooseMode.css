@@ -1,0 +1,112 @@
+.choose {
+  width: min(100%, 52rem);
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: clamp(1.75rem, 4vh, 2.75rem);
+}
+
+.choose__eyebrow {
+  margin: 0;
+  font-size: clamp(1.05rem, 2.4vw, 1.25rem);
+  font-weight: 500;
+  color: var(--ink-soft);
+  letter-spacing: -0.01em;
+}
+
+.choose__options {
+  position: relative;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  /* Equal space on both sides of the true center */
+  column-gap: clamp(2.75rem, 7vw, 4.5rem);
+  align-items: stretch;
+}
+
+.choose__options::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0.35rem;
+  bottom: 0.35rem;
+  width: 1px;
+  background: var(--ink-faint);
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.choose__option {
+  appearance: none;
+  border: none;
+  background: transparent;
+  text-align: center;
+  /* Symmetric inset so text blocks share the same distance from the rule */
+  padding: 0.85rem 0.5rem;
+  min-height: var(--touch);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.45rem;
+  transform-origin: center center;
+  transition:
+    opacity 160ms ease,
+    color 160ms ease;
+}
+
+.choose__option--soon {
+  opacity: 0.48;
+  cursor: default;
+}
+
+.choose__title {
+  font-size: clamp(1.45rem, 3.6vw, 2.25rem);
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  transition: color 160ms ease;
+}
+
+.choose__blurb {
+  font-size: clamp(0.95rem, 1.8vw, 1.05rem);
+  color: var(--ink-soft);
+  max-width: 22ch;
+  line-height: 1.45;
+}
+
+.choose__soon {
+  margin-top: 0.15rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--coral);
+  font-weight: 600;
+}
+
+@media (max-width: 520px) {
+  .choose__options {
+    grid-template-columns: 1fr;
+    column-gap: 0;
+    row-gap: 1.25rem;
+  }
+
+  .choose__options::before {
+    left: 10%;
+    right: 10%;
+    top: auto;
+    bottom: auto;
+    width: auto;
+    height: 1px;
+    transform: none;
+    /* Place between stacked options via midpoint is awkward; use border instead */
+    display: none;
+  }
+
+  .choose__option:first-child {
+    border-bottom: 1px solid var(--ink-faint);
+    padding-bottom: 1.35rem;
+  }
+}

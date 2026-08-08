@@ -1,0 +1,38 @@
+.stub {
+  min-height: 100dvh;
+  padding: var(--space-page);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.75rem;
+  max-width: 32rem;
+}
+
+.stub h1 {
+  margin: 0;
+  font-size: clamp(1.8rem, 4vw, 2.4rem);
+  letter-spacing: -0.03em;
+  font-weight: 500;
+}
+
+.stub p {
+  margin: 0;
+  color: var(--ink-soft);
+  line-height: 1.5;
+}
+
+.stub__kicker {
+  font-family: var(--font-brand);
+  font-size: 1.75rem;
+  color: var(--ink);
+}
+
+.stub__back {
+  margin-top: 1.25rem;
+  color: var(--coral-deep);
+  font-weight: 500;
+  width: fit-content;
+  min-height: var(--touch);
+  display: inline-flex;
+  align-items: center;
+}

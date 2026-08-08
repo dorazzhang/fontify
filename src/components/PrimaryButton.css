@@ -1,0 +1,35 @@
+.primary-btn {
+  appearance: none;
+  border: none;
+  min-height: var(--touch);
+  padding: 0.85rem 1.5rem;
+  border-radius: 999px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  transition:
+    background 160ms ease,
+    color 160ms ease,
+    box-shadow 160ms ease,
+    opacity 160ms ease;
+}
+
+.primary-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.primary-btn--solid {
+  background: var(--coral);
+  color: #fffaf8;
+  box-shadow: 0 10px 28px rgba(224, 122, 95, 0.28);
+}
+
+.primary-btn--solid:hover:not(:disabled) {
+  background: var(--coral-deep);
+}
+
+.primary-btn--ghost {
+  background: transparent;
+  color: var(--ink-soft);
+  border: 1px solid var(--ink-faint);
+}

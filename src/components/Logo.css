@@ -1,0 +1,81 @@
+.logo {
+  display: block;
+  line-height: 0;
+  will-change: transform;
+  overflow: visible;
+}
+
+.logo__word {
+  position: relative;
+  display: grid;
+  width: fit-content;
+  /* Generous box so script flourishes aren’t masked/cropped */
+  padding: 0.4em 0.3em 0.48em;
+  line-height: 1.15;
+  overflow: visible;
+}
+
+.logo--hero {
+  width: fit-content;
+  max-width: min(96vw, 42rem);
+}
+
+.logo--corner {
+  width: fit-content;
+}
+
+.logo__layer {
+  grid-area: 1 / 1;
+  font-family: var(--font-brand);
+  font-size: clamp(5rem, 20vw, 10rem);
+  line-height: 1.15;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  display: block;
+  padding: 0.12em 0.1em;
+  overflow: visible;
+}
+
+.logo--corner .logo__word {
+  padding: 0.15em 0.2em 0.3em;
+}
+
+.logo--corner .logo__layer {
+  font-size: clamp(1.75rem, 4.2vw, 2.35rem);
+  padding: 0.06em 0.06em;
+}
+
+.logo__layer--stroke {
+  color: transparent;
+  -webkit-text-stroke: 1.25px var(--ink);
+}
+
+.logo__layer--fill {
+  color: var(--ink);
+}
+
+.logo__underline {
+  position: absolute;
+  left: -0.1em;
+  right: -1.85em;
+  /* Sit on the letter baseline so the path crosses f / f / y descenders */
+  top: 56%;
+  width: auto;
+  height: 0.48em;
+  overflow: visible;
+  pointer-events: none;
+  z-index: 2;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .logo__layer {
+    -webkit-mask-image: none !important;
+    mask-image: none !important;
+    opacity: 1 !important;
+  }
+
+  .logo__underline path {
+    stroke-dasharray: none !important;
+    stroke-dashoffset: 0 !important;
+  }
+}

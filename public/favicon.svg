@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+  <rect width="32" height="32" rx="8" fill="#e8ebea"/>
+  <!-- Cursive lowercase f -->
+  <path
+    d="M18.8 6.2
+       C16.2 6.4 14.6 8.8 14.8 12.2
+       C15.1 17.6 15.4 22.2 14.2 25.8
+       C13.6 27.6 12.2 28.4 11 27.8
+       C9.8 27.2 9.6 25.6 10.6 24.4
+       M11.8 14.8 H21.2"
+    stroke="#111111"
+    stroke-width="1.35"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+</svg>
