@@ -20,6 +20,18 @@
   width: 100%;
 }
 
+.upload-instr__continue {
+  display: flex;
+  justify-content: center;
+  padding-top: 0.25rem;
+}
+
+.upload-instr-stack .upload-instr__continue {
+  max-width: 36rem;
+  margin-inline: auto;
+  width: 100%;
+}
+
 .upload-instr--with-bubble {
   max-width: min(100%, 44rem);
   display: grid;

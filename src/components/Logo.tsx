@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import { motion, useMotionValue, useMotionTemplate, animate } from 'framer-motion'
 import { useEffect } from 'react'
 import './Logo.css'
@@ -8,6 +9,8 @@ type LogoProps = {
   onWriteComplete?: () => void
   /** Draw the baseline flourish when settled in the corner (default true) */
   showUnderline?: boolean
+  /** Corner logo navigates home (default true) */
+  linkHome?: boolean
 }
 
 /** Full left→right write duration (seconds) */
@@ -63,6 +66,7 @@ export function Logo({
   animateWrite = false,
   onWriteComplete,
   showUnderline = true,
+  linkHome = placement === 'corner',
 }: LogoProps) {
   const strokeProgress = useMotionValue(0)
   const fillProgress = useMotionValue(0)
@@ -111,13 +115,13 @@ export function Logo({
 
   const writing = placement === 'hero' && animateWrite
 
-  return (
+  const mark = (
     <motion.div
       className={`logo logo--${placement}`}
       layoutId="fontify-logo"
       transition={{ layout: { duration: ZOOM_S, ease: ZOOM_EASE } }}
     >
-      <div className="logo__word" aria-label="fontify" role="img">
+      <div className="logo__word" aria-hidden={linkHome || undefined}>
         {writing ? (
           <>
             <WritingLayer
@@ -129,7 +133,7 @@ export function Logo({
               progress={fillProgress}
               delay={FILL_TRAIL_S}
             />
-            <span className="sr-only">fontify</span>
+            {!linkHome && <span className="sr-only">fontify</span>}
           </>
         ) : (
           <span className="logo__layer logo__layer--fill">fontify</span>
@@ -178,4 +182,19 @@ export function Logo({
       </div>
     </motion.div>
   )
+
+  if (linkHome && placement === 'corner') {
+    return (
+      <Link
+        to="/"
+        state={{ skipIntro: true }}
+        className="logo-link"
+        aria-label="fontify home"
+      >
+        {mark}
+      </Link>
+    )
+  }
+
+  return mark
 }

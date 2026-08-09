@@ -1,11 +1,16 @@
 import { useState } from 'react'
-import { motion } from 'framer-motion'
+import { AnimatePresence, motion } from 'framer-motion'
+import { useNavigate } from 'react-router-dom'
 import { UploadShell } from '../components/UploadShell'
 import { PhotoDropzone, type SelectedFile } from '../components/PhotoDropzone'
+import { PrimaryButton } from '../components/PrimaryButton'
+import { useSession } from '../state/sessionStore'
 import './UploadInstructions.css'
 
 export function SamplesInstructionsPage() {
   const [files, setFiles] = useState<SelectedFile[]>([])
+  const { setPhotos, setUploadMode } = useSession()
+  const navigate = useNavigate()
 
   return (
     <UploadShell title="Handwriting samples" backTo="/upload" backLabel="Back">
@@ -43,6 +48,28 @@ export function SamplesInstructionsPage() {
         </article>
 
         <PhotoDropzone files={files} onChange={setFiles} />
+
+        <AnimatePresence>
+          {files.length > 0 && (
+            <motion.div
+              className="upload-instr__continue"
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 8 }}
+              transition={{ duration: 0.3 }}
+            >
+              <PrimaryButton
+                onClick={() => {
+                  setUploadMode('samples')
+                  setPhotos(files)
+                  navigate('/upload/processing')
+                }}
+              >
+                Continue
+              </PrimaryButton>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </motion.div>
     </UploadShell>
   )

@@ -1,14 +1,19 @@
 import { useState } from 'react'
-import { motion } from 'framer-motion'
+import { AnimatePresence, motion } from 'framer-motion'
+import { useNavigate } from 'react-router-dom'
 import { UploadShell } from '../components/UploadShell'
 import { SampleSheetExample } from '../components/SampleSheetExample'
 import { PhotoDropzone, type SelectedFile } from '../components/PhotoDropzone'
+import { PrimaryButton } from '../components/PrimaryButton'
+import { useSession } from '../state/sessionStore'
 import './UploadInstructions.css'
 
 const PANGRAM = 'The quick brown fox jumps over the lazy dog.'
 
 export function StructuredInstructionsPage() {
   const [files, setFiles] = useState<SelectedFile[]>([])
+  const { setPhotos, setUploadMode } = useSession()
+  const navigate = useNavigate()
 
   return (
     <UploadShell title="Structured sample" backTo="/upload" backLabel="Back">
@@ -50,6 +55,28 @@ export function StructuredInstructionsPage() {
         </ul>
 
         <PhotoDropzone files={files} onChange={setFiles} />
+
+        <AnimatePresence>
+          {files.length > 0 && (
+            <motion.div
+              className="upload-instr__continue"
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 8 }}
+              transition={{ duration: 0.3 }}
+            >
+              <PrimaryButton
+                onClick={() => {
+                  setUploadMode('structured')
+                  setPhotos(files)
+                  navigate('/upload/processing')
+                }}
+              >
+                Continue
+              </PrimaryButton>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </motion.article>
     </UploadShell>
   )

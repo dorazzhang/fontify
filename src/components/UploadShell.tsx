@@ -1,4 +1,4 @@
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import type { ReactNode } from 'react'
 import { Logo } from './Logo'
 import './UploadShell.css'
@@ -37,14 +37,9 @@ export function UploadShell({
 
         <h1 className="upload-shell__title">{title}</h1>
 
-        <Link
-          to="/"
-          state={{ skipIntro: true }}
-          className="upload-shell__logo"
-          aria-label="fontify home"
-        >
+        <div className="upload-shell__logo">
           <Logo placement="corner" />
-        </Link>
+        </div>
       </header>
 
       <main className="upload-shell__main">{children}</main>

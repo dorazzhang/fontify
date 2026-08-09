@@ -16,7 +16,7 @@
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
   gap: 0.75rem;
-  min-height: 3rem;
+  height: 3rem;
 }
 
 .upload-shell__back {
@@ -24,11 +24,16 @@
   border: none;
   background: transparent;
   justify-self: start;
-  min-height: var(--touch);
-  padding: 0.35rem 0.15rem;
+  align-self: center;
+  display: inline-flex;
+  align-items: center;
+  height: 2.5rem;
+  min-height: 0;
+  padding: 0;
   font-weight: 500;
   color: var(--ink-soft);
   letter-spacing: -0.01em;
+  line-height: 1;
 }
 
 .upload-shell__back:hover {
@@ -38,19 +43,45 @@
 .upload-shell__title {
   margin: 0;
   justify-self: center;
+  align-self: center;
   text-align: center;
   font-size: clamp(1.35rem, 3.2vw, 1.85rem);
   font-weight: 500;
   letter-spacing: -0.03em;
   line-height: 1.15;
+  /* Don’t block logo / back clicks if the title overflows */
+  pointer-events: none;
+  max-width: min(52vw, 16rem);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .upload-shell__logo {
   justify-self: end;
+  align-self: center;
+  display: inline-flex;
+  align-items: center;
+  height: 2.5rem;
   line-height: 0;
-  /* Hide oversized padding from corner logo in tight header */
-  transform: scale(0.92);
-  transform-origin: right center;
+  position: relative;
+  z-index: 2;
+}
+
+.upload-shell__logo .logo--corner .logo__word {
+  padding: 0 0.05em 0.2em;
+}
+
+.upload-shell__logo .logo--corner .logo__layer {
+  font-size: clamp(1.55rem, 3.6vw, 2rem);
+  line-height: 1;
+  padding: 0;
+}
+
+.upload-shell__logo .logo__underline {
+  top: 62%;
+  height: 0.4em;
+  right: -1.4em;
 }
 
 .upload-shell__main {

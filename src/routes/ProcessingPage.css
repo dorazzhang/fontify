@@ -1,0 +1,112 @@
+.processing {
+  position: relative;
+  min-height: 100dvh;
+  padding:
+    max(0.85rem, env(safe-area-inset-top))
+    max(var(--space-page), env(safe-area-inset-right))
+    max(var(--space-page), env(safe-area-inset-bottom))
+    max(var(--space-page), env(safe-area-inset-left));
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: 1rem;
+  overflow: hidden;
+}
+
+.processing__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 3rem;
+  position: relative;
+  z-index: 3;
+}
+
+.processing__back {
+  appearance: none;
+  border: none;
+  background: transparent;
+  display: inline-flex;
+  align-items: center;
+  height: 2.5rem;
+  min-height: 0;
+  padding: 0;
+  font-weight: 500;
+  color: var(--ink-soft);
+  line-height: 1;
+}
+
+.processing__back:hover {
+  color: var(--ink);
+}
+
+.processing__logo,
+.processing__header .logo-link {
+  display: inline-flex;
+  align-items: center;
+  height: 2.5rem;
+  line-height: 0;
+  position: relative;
+  z-index: 2;
+}
+
+.processing__header .logo--corner .logo__word {
+  padding: 0 0.05em 0.2em;
+}
+
+.processing__header .logo--corner .logo__layer {
+  font-size: clamp(1.55rem, 3.6vw, 2rem);
+  line-height: 1;
+  padding: 0;
+}
+
+.processing__header .logo__underline {
+  top: 62%;
+  height: 0.4em;
+  right: -1.4em;
+}
+
+.processing__stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+}
+
+.processing__viewport {
+  position: relative;
+  width: min(100%, 40rem);
+  min-height: min(70vh, 28rem);
+  display: grid;
+  place-items: center;
+}
+
+.processing__layer {
+  grid-area: 1 / 1;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(1.25rem, 4vh, 2rem);
+  will-change: transform, opacity, filter;
+}
+
+.processing__layer--specimen {
+  gap: clamp(1.5rem, 4vh, 2.25rem);
+}
+
+.processing__status {
+  margin: 0;
+  text-align: center;
+  font-size: clamp(1.15rem, 2.6vw, 1.45rem);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+
+.processing__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: center;
+}

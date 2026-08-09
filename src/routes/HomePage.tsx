@@ -1,6 +1,6 @@
 import { AnimatePresence, LayoutGroup, motion } from 'framer-motion'
-import { useCallback, useRef, useState } from 'react'
-import { useLocation } from 'react-router-dom'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { Logo } from '../components/Logo'
 import { ChooseMode } from '../components/ChooseMode'
 import './HomePage.css'
@@ -13,10 +13,21 @@ type HomeLocationState = {
 
 export function HomePage() {
   const location = useLocation()
-  const skipIntro = Boolean((location.state as HomeLocationState | null)?.skipIntro)
+  const navigate = useNavigate()
+
+  // Capture once — browser keeps history.state across reload, which would
+  // otherwise permanently skip the intro after “back home”.
+  const [skipIntro] = useState(() =>
+    Boolean((location.state as HomeLocationState | null)?.skipIntro),
+  )
 
   const [stage, setStage] = useState<Stage>(skipIntro ? 'choose' : 'writing')
   const finished = useRef(skipIntro)
+
+  useEffect(() => {
+    if (!skipIntro) return
+    navigate(location.pathname, { replace: true, state: null })
+  }, [skipIntro, navigate, location.pathname])
 
   const handleWriteComplete = useCallback(() => {
     if (finished.current) return
@@ -49,6 +60,7 @@ export function HomePage() {
             placement={showCorner ? 'corner' : 'hero'}
             animateWrite={!showCorner}
             onWriteComplete={!showCorner ? handleWriteComplete : undefined}
+            linkHome={showCorner}
           />
         </header>
 

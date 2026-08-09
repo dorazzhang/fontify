@@ -10,9 +10,9 @@ type StubPageProps = {
 export function StubPage({ title, note }: StubPageProps) {
   return (
     <main className="stub">
-      <Link to="/" state={{ skipIntro: true }} className="stub__logo" aria-label="fontify home">
+      <div className="stub__logo">
         <Logo placement="corner" />
-      </Link>
+      </div>
       <h1>{title}</h1>
       <p>{note}</p>
       <Link className="stub__back" to="/" state={{ skipIntro: true }}>

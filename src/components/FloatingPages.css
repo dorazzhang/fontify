@@ -1,0 +1,30 @@
+.floating-pages {
+  position: relative;
+  width: min(100%, 28rem);
+  height: min(58vw, 22rem);
+  margin-inline: auto;
+  display: grid;
+  place-items: center;
+}
+
+.floating-pages__card {
+  position: absolute;
+  width: clamp(5.5rem, 18vw, 8.5rem);
+  aspect-ratio: 3 / 4;
+  border-radius: 0.45rem;
+  overflow: hidden;
+  background: #fbfcfb;
+  box-shadow:
+    0 14px 36px rgba(26, 39, 68, 0.14),
+    0 0 0 1px rgba(26, 39, 68, 0.08);
+  will-change: transform;
+}
+
+.floating-pages__card img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+  user-select: none;
+}
