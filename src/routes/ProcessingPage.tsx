@@ -1,22 +1,50 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { Navigate, useNavigate } from 'react-router-dom'
+import { Navigate, useLocation, useNavigate } from 'react-router-dom'
 import { FloatingPages } from '../components/FloatingPages'
 import { FontSpecimen } from '../components/FontSpecimen'
 import { Logo } from '../components/Logo'
 import { PrimaryButton } from '../components/PrimaryButton'
 import { mockProcess } from '../lib/mockProcess'
-import { useSession } from '../state/sessionStore'
+import { useSession, type CaptureSource } from '../state/sessionStore'
 import './ProcessingPage.css'
 
 type Phase = 'processing' | 'result'
 
+type ProcessingLocationState = {
+  source?: CaptureSource
+}
+
 const ZOOM_EASE = [0.16, 1, 0.3, 1] as const
 
+function backPathForMode(mode: CaptureSource | null) {
+  if (mode === 'live') return '/write/capture'
+  if (mode === 'samples') return '/upload/samples'
+  if (mode === 'structured') return '/upload/structured'
+  return '/upload'
+}
+
+function retryPathForMode(mode: CaptureSource | null) {
+  if (mode === 'live') return '/write'
+  return '/upload'
+}
+
 export function ProcessingPage() {
-  const { photos, uploadMode, clearUpload } = useSession()
+  const { photos, uploadMode, setUploadMode, clearUpload } = useSession()
   const navigate = useNavigate()
+  const location = useLocation()
   const [phase, setPhase] = useState<Phase>('processing')
+  // Only auto-redirect if we landed here with no photos — not when clearing to leave
+  const landedEmpty = useRef(photos.length === 0)
+
+  const navSource = (location.state as ProcessingLocationState | null)?.source
+  const source: CaptureSource | null = navSource ?? uploadMode
+
+  useEffect(() => {
+    if (navSource && navSource !== uploadMode) {
+      setUploadMode(navSource)
+    }
+  }, [navSource, uploadMode, setUploadMode])
 
   useEffect(() => {
     if (!photos.length) return
@@ -30,12 +58,23 @@ export function ProcessingPage() {
     }
   }, [photos.length])
 
+  if (landedEmpty.current && !photos.length) {
+    return <Navigate to={source === 'live' ? '/write' : '/upload'} replace />
+  }
+
   if (!photos.length) {
-    return <Navigate to="/upload" replace />
+    return null
   }
 
   const urls = photos.map((p) => p.previewUrl)
   const isResult = phase === 'result'
+  const isLive = source === 'live'
+
+  const leaveTo = (path: string, state?: object) => {
+    navigate(path, state ? { state } : undefined)
+    // Clear after navigation so empty photos don’t hijack this page
+    queueMicrotask(() => clearUpload())
+  }
 
   return (
     <main className={`processing${isResult ? ' processing--result' : ''}`}>
@@ -45,11 +84,10 @@ export function ProcessingPage() {
           className="processing__back"
           onClick={() => {
             if (isResult) {
-              clearUpload()
-              navigate('/upload')
+              leaveTo(retryPathForMode(source))
               return
             }
-            navigate(uploadMode === 'samples' ? '/upload/samples' : '/upload/structured')
+            navigate(backPathForMode(source))
           }}
         >
           Back
@@ -64,7 +102,7 @@ export function ProcessingPage() {
               <motion.div
                 key="orbit"
                 className="processing__layer processing__layer--orbit"
-                initial={{ opacity: 0, scale: 0.92 }}
+                initial={{ opacity: 0, scale: 0.96 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{
                   scale: 0.38,
@@ -73,7 +111,7 @@ export function ProcessingPage() {
                 }}
                 transition={{ duration: 1.15, ease: ZOOM_EASE }}
               >
-                <FloatingPages urls={urls} />
+                <FloatingPages urls={urls} variant={isLive ? 'glyphs' : 'pages'} />
                 <p className="processing__status">Creating your font…</p>
               </motion.div>
             )}
@@ -97,21 +135,15 @@ export function ProcessingPage() {
                   transition={{ delay: 0.85, duration: 0.45 }}
                 >
                   <PrimaryButton
-                    onClick={() => {
-                      clearUpload()
-                      navigate('/', { state: { skipIntro: true } })
-                    }}
+                    onClick={() => leaveTo('/', { skipIntro: true })}
                   >
                     Back home
                   </PrimaryButton>
                   <PrimaryButton
                     variant="ghost"
-                    onClick={() => {
-                      clearUpload()
-                      navigate('/upload')
-                    }}
+                    onClick={() => leaveTo(retryPathForMode(source))}
                   >
-                    Upload again
+                    {isLive ? 'Write again' : 'Upload again'}
                   </PrimaryButton>
                 </motion.div>
               </motion.div>

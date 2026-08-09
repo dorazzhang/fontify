@@ -69,7 +69,7 @@ export function StructuredInstructionsPage() {
                 onClick={() => {
                   setUploadMode('structured')
                   setPhotos(files)
-                  navigate('/upload/processing')
+                  navigate('/processing', { state: { source: 'structured' } })
                 }}
               >
                 Continue

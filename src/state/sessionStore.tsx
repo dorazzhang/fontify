@@ -8,12 +8,12 @@ import {
 } from 'react'
 import type { SelectedFile } from '../components/PhotoDropzone'
 
-export type UploadMode = 'structured' | 'samples'
+export type CaptureSource = 'structured' | 'samples' | 'live'
 
 type SessionContextValue = {
-  uploadMode: UploadMode | null
+  uploadMode: CaptureSource | null
   photos: SelectedFile[]
-  setUploadMode: (mode: UploadMode | null) => void
+  setUploadMode: (mode: CaptureSource | null) => void
   setPhotos: (files: SelectedFile[]) => void
   clearUpload: () => void
 }
@@ -21,14 +21,17 @@ type SessionContextValue = {
 const SessionContext = createContext<SessionContextValue | null>(null)
 
 export function SessionProvider({ children }: { children: ReactNode }) {
-  const [uploadMode, setUploadMode] = useState<UploadMode | null>(null)
+  const [uploadMode, setUploadMode] = useState<CaptureSource | null>(null)
   const [photos, setPhotosState] = useState<SelectedFile[]>([])
 
   const setPhotos = useCallback((files: SelectedFile[]) => {
     setPhotosState((prev) => {
       const nextIds = new Set(files.map((f) => f.id))
       for (const p of prev) {
-        if (!nextIds.has(p.id)) URL.revokeObjectURL(p.previewUrl)
+        // Only revoke blob: URLs — data: URLs don't need revoke
+        if (!nextIds.has(p.id) && p.previewUrl.startsWith('blob:')) {
+          URL.revokeObjectURL(p.previewUrl)
+        }
       }
       return files
     })
@@ -36,7 +39,9 @@ export function SessionProvider({ children }: { children: ReactNode }) {
 
   const clearUpload = useCallback(() => {
     setPhotosState((prev) => {
-      for (const p of prev) URL.revokeObjectURL(p.previewUrl)
+      for (const p of prev) {
+        if (p.previewUrl.startsWith('blob:')) URL.revokeObjectURL(p.previewUrl)
+      }
       return []
     })
     setUploadMode(null)

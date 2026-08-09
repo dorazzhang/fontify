@@ -34,7 +34,7 @@ export function SampleSheetExample({ pangram }: SampleSheetExampleProps) {
         filter="url(#sheet-soft)"
       />
 
-      <g transform="rotate(-1.2 160 110)" fill="#1a2744" opacity="0.82">
+      <g transform="rotate(-1.2 160 110)" fill="#2c3540" opacity="0.82">
         <text
           x="36"
           y="48"

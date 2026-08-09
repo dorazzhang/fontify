@@ -1,0 +1,63 @@
+.writing-guides {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  display: grid;
+  place-items: center;
+  padding: 12% 12%;
+}
+
+.writing-guides--wide {
+  padding: 8% 4%;
+  align-content: center;
+  gap: 12%;
+  place-items: stretch;
+}
+
+.writing-guides__band {
+  position: relative;
+  width: 100%;
+  height: 48%;
+  max-height: 11rem;
+}
+
+.writing-guides--wide .writing-guides__band {
+  height: auto;
+  max-height: none;
+  /* Each band is one writing line; two bands stack with gap from parent */
+  flex: 1 1 0;
+  min-height: 2.75rem;
+}
+
+.writing-guides--wide {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.writing-guides__line {
+  position: absolute;
+  left: 0;
+  right: 0;
+}
+
+.writing-guides__line--solid {
+  height: 1.5px;
+  background: rgba(26, 39, 68, 0.28);
+}
+
+.writing-guides__line--top {
+  top: 0;
+}
+
+.writing-guides__line--bottom {
+  bottom: 0;
+}
+
+.writing-guides__line--mid {
+  top: 50%;
+  height: 0;
+  border-top: 1.5px dotted rgba(26, 39, 68, 0.28);
+  transform: translateY(-50%);
+}

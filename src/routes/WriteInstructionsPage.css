@@ -1,0 +1,9 @@
+.write-instr {
+  max-width: 36rem;
+}
+
+.write-instr__start {
+  display: flex;
+  justify-content: center;
+  padding-top: 0.5rem;
+}

@@ -31,7 +31,7 @@
   height: min(48vw, 22rem);
   top: 8%;
   right: -6%;
-  background: radial-gradient(circle, rgba(224, 122, 95, 0.22), transparent 68%);
+  background: radial-gradient(circle, rgba(var(--accent-rgb), 0.28), transparent 68%);
 }
 
 .home__orb--b {

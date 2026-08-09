@@ -18,9 +18,9 @@ body {
   font-family: var(--font-ui);
   font-optical-sizing: auto;
   background:
-    radial-gradient(120% 80% at 10% 0%, #fbfcfb 0%, transparent 55%),
-    radial-gradient(90% 70% at 90% 15%, #dfe8e6 0%, transparent 50%),
-    radial-gradient(70% 60% at 50% 100%, #cfd8d5 0%, transparent 55%),
+    radial-gradient(120% 80% at 10% 0%, #fbfcfd 0%, transparent 55%),
+    radial-gradient(90% 70% at 90% 15%, #dce8f0 0%, transparent 50%),
+    radial-gradient(70% 60% at 50% 100%, #c9d5e0 0%, transparent 55%),
     linear-gradient(165deg, var(--paper-0), var(--paper-1) 45%, var(--paper-2));
   background-attachment: fixed;
   -webkit-font-smoothing: antialiased;

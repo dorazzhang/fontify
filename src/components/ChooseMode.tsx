@@ -15,7 +15,7 @@ const options = [
     title: 'Write live',
     blurb: 'Draw each letter here with finger or stylus.',
     to: '/write',
-    ready: false,
+    ready: true,
   },
 ] as const
 

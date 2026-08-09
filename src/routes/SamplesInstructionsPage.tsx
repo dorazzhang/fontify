@@ -62,7 +62,7 @@ export function SamplesInstructionsPage() {
                 onClick={() => {
                   setUploadMode('samples')
                   setPhotos(files)
-                  navigate('/upload/processing')
+                  navigate('/processing', { state: { source: 'samples' } })
                 }}
               >
                 Continue
