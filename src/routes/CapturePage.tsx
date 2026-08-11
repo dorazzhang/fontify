@@ -10,19 +10,43 @@ import {
 } from '../components/WritingCanvas'
 import { WritingGuides } from '../components/WritingGuides'
 import { buildCaptureSteps } from '../lib/letters'
+import { dataUrlToFile } from '../lib/buildLiveFont'
 import { useSession } from '../state/sessionStore'
 import type { SelectedFile } from '../components/PhotoDropzone'
 import './CapturePage.css'
 
 export function CapturePage() {
   const steps = useMemo(() => buildCaptureSteps(), [])
+  const {
+    ready,
+    captureDraft,
+    setCaptureDraft,
+    setPhotos,
+    setUploadMode,
+    setBuiltFont,
+    setResultReady,
+  } = useSession()
+
   const [index, setIndex] = useState(0)
   const [saved, setSaved] = useState<Record<string, Stroke[]>>({})
   const [previews, setPreviews] = useState<Record<string, string>>({})
+  const [hydrated, setHydrated] = useState(false)
   const [emptyHint, setEmptyHint] = useState(false)
+  const [finishing, setFinishing] = useState(false)
   const canvasRef = useRef<WritingCanvasHandle>(null)
   const navigate = useNavigate()
-  const { setPhotos, setUploadMode } = useSession()
+
+  useEffect(() => {
+    if (!ready || hydrated) return
+    if (captureDraft) {
+      setIndex(
+        Math.min(Math.max(captureDraft.index, 0), Math.max(steps.length - 1, 0)),
+      )
+      setSaved(captureDraft.saved ?? {})
+      setPreviews(captureDraft.previews ?? {})
+    }
+    setHydrated(true)
+  }, [ready, hydrated, captureDraft, steps.length])
 
   const step = steps[index]
   const progress = ((index + 1) / steps.length) * 100
@@ -30,18 +54,34 @@ export function CapturePage() {
   const isLast = index === steps.length - 1
 
   useEffect(() => {
+    if (!hydrated) return
     canvasRef.current?.loadStrokes(saved[step.id] ?? [])
     setEmptyHint(false)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [step.id])
+  }, [step.id, hydrated])
+
+  const persistDraft = (
+    nextIndex: number,
+    nextSaved: Record<string, Stroke[]>,
+    nextPreviews: Record<string, string>,
+  ) => {
+    setCaptureDraft({
+      index: nextIndex,
+      saved: nextSaved,
+      previews: nextPreviews,
+    })
+  }
 
   const persistCurrent = () => {
     const strokes = canvasRef.current?.getStrokes() ?? []
     const hasInk = canvasRef.current?.hasInk() ?? false
     const preview = hasInk ? (canvasRef.current?.toDataURL() ?? '') : ''
-    setSaved((prev) => ({ ...prev, [step.id]: strokes }))
-    setPreviews((prev) => ({ ...prev, [step.id]: preview }))
-    return { strokes, preview, hasInk }
+    const nextSaved = { ...saved, [step.id]: strokes }
+    const nextPreviews = { ...previews, [step.id]: preview }
+    setSaved(nextSaved)
+    setPreviews(nextPreviews)
+    persistDraft(index, nextSaved, nextPreviews)
+    return { strokes, preview, hasInk, nextSaved, nextPreviews }
   }
 
   const requireInk = () => {
@@ -53,45 +93,61 @@ export function CapturePage() {
     return false
   }
 
-  const finish = () => {
-    if (!requireInk()) return
-    const { preview: currentPreview } = persistCurrent()
-    const merged = { ...previews, [step.id]: currentPreview }
-    const files: SelectedFile[] = steps
-      .map((s) => {
+  const finish = async () => {
+    if (!requireInk() || finishing) return
+    setFinishing(true)
+    try {
+      const { preview: currentPreview, nextPreviews } = persistCurrent()
+      const merged = { ...nextPreviews, [step.id]: currentPreview }
+      const files: SelectedFile[] = []
+      for (const s of steps) {
         const url = merged[s.id]
-        if (!url) return null
-        return {
+        if (!url) continue
+        const file = await dataUrlToFile(url, `${s.id}.png`)
+        files.push({
           id: s.id,
-          file: new File([], `${s.id}.png`, { type: 'image/png' }),
+          file,
           previewUrl: url,
-        } satisfies SelectedFile
-      })
-      .filter((f): f is SelectedFile => f != null)
+        })
+      }
 
-    setUploadMode('live')
-    setPhotos(files)
-    navigate('/processing', { state: { source: 'live' } })
+      // New font run — clear previous result
+      setBuiltFont(null)
+      setResultReady(false)
+      setUploadMode('live')
+      setPhotos(files)
+      navigate('/processing', { state: { source: 'live' } })
+    } finally {
+      setFinishing(false)
+    }
   }
 
   const goNext = () => {
     if (!requireInk()) return
     if (isLast) {
-      finish()
+      void finish()
       return
     }
-    persistCurrent()
-    setIndex((i) => i + 1)
+    const { nextSaved, nextPreviews } = persistCurrent()
+    const nextIndex = index + 1
+    setIndex(nextIndex)
+    persistDraft(nextIndex, nextSaved, nextPreviews)
   }
 
   const goBack = () => {
     setEmptyHint(false)
-    persistCurrent()
+    const { nextSaved, nextPreviews } = persistCurrent()
     if (isFirst) {
       navigate('/write')
       return
     }
-    setIndex((i) => i - 1)
+    const nextIndex = index - 1
+    setIndex(nextIndex)
+    persistDraft(nextIndex, nextSaved, nextPreviews)
+  }
+
+  if (!ready || !hydrated) {
+    return <main className="capture" />
   }
 
   return (
@@ -166,6 +222,11 @@ export function CapturePage() {
             onClick={() => {
               canvasRef.current?.clear()
               setEmptyHint(false)
+              const nextSaved = { ...saved, [step.id]: [] }
+              const nextPreviews = { ...previews, [step.id]: '' }
+              setSaved(nextSaved)
+              setPreviews(nextPreviews)
+              persistDraft(index, nextSaved, nextPreviews)
             }}
           >
             Reset
@@ -173,7 +234,9 @@ export function CapturePage() {
           <PrimaryButton variant="ghost" onClick={goBack}>
             Back
           </PrimaryButton>
-          <PrimaryButton onClick={goNext}>{isLast ? 'Finish' : 'Next'}</PrimaryButton>
+          <PrimaryButton onClick={goNext} disabled={finishing}>
+            {isLast ? (finishing ? 'Preparing…' : 'Finish') : 'Next'}
+          </PrimaryButton>
         </div>
       </section>
     </main>

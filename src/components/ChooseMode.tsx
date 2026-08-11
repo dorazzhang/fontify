@@ -9,6 +9,7 @@ const options = [
     blurb: 'Turn photos of your handwriting into a typeface.',
     to: '/upload',
     ready: true,
+    badge: 'Preview',
   },
   {
     id: 'live',
@@ -16,6 +17,7 @@ const options = [
     blurb: 'Draw each letter here with finger or stylus.',
     to: '/write',
     ready: true,
+    badge: '',
   },
 ] as const
 
@@ -39,28 +41,21 @@ export function ChooseMode() {
             key={opt.id}
             type="button"
             role="listitem"
-            className={`choose__option${opt.ready ? '' : ' choose__option--soon'}`}
+            className="choose__option"
             initial={{ opacity: 0, y: 22 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.28 + i * 0.12, duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-            whileHover={
-              opt.ready
-                ? {
-                    y: -8,
-                    scale: 1.06,
-                    transition: { type: 'spring', stiffness: 420, damping: 22 },
-                  }
-                : undefined
-            }
-            whileTap={opt.ready ? { scale: 0.98 } : undefined}
-            onClick={() => {
-              if (opt.ready) navigate(opt.to)
+            whileHover={{
+              y: -8,
+              scale: 1.06,
+              transition: { type: 'spring', stiffness: 420, damping: 22 },
             }}
-            aria-disabled={!opt.ready}
+            whileTap={{ scale: 0.98 }}
+            onClick={() => navigate(opt.to)}
           >
             <span className="choose__title">{opt.title}</span>
             <span className="choose__blurb">{opt.blurb}</span>
-            {!opt.ready && <span className="choose__soon"></span>}
+            {opt.badge ? <span className="choose__soon">{opt.badge}</span> : null}
           </motion.button>
         ))}
       </div>

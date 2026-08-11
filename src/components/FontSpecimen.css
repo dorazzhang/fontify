@@ -1,10 +1,12 @@
 .font-specimen {
   width: min(100%, 40rem);
+  margin-inline: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: clamp(1.1rem, 3vh, 1.65rem);
+  gap: clamp(0.85rem, 2.4vh, 1.25rem);
   text-align: center;
+  font-family: var(--font-specimen), cursive;
 }
 
 .font-specimen__label {
@@ -21,28 +23,91 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 0.35rem;
+  align-items: center;
+  gap: 0.25rem;
+  font-family: inherit;
 }
 
 .font-specimen__row {
   margin: 0;
-  font-family: var(--font-specimen);
-  font-size: clamp(1.55rem, 4.2vw, 2.35rem);
+  width: 100%;
+  font-family: inherit;
+  font-size: clamp(1.45rem, 3.8vw, 2.1rem);
   font-weight: 500;
   line-height: 1.35;
   letter-spacing: 0.04em;
   color: var(--ink);
   overflow-wrap: anywhere;
+  text-align: center;
 }
 
 .font-specimen__sentence {
-  margin: 0.25rem 0 0;
-  max-width: 28ch;
-  font-family: var(--font-specimen);
-  font-size: clamp(1.55rem, 4vw, 2.15rem);
+  margin: 0.15rem 0 0;
+  max-width: 32ch;
+  font-family: inherit;
+  font-size: clamp(1.4rem, 3.5vw, 1.95rem);
   font-weight: 500;
   line-height: 1.35;
   color: var(--ink);
+  text-align: center;
+}
+
+.font-specimen__try {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.4rem;
+  margin-top: 0.1rem;
+  text-align: left;
+}
+
+.font-specimen__try-label {
+  font-family: var(--font-ui);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--coral);
+  text-align: center;
+}
+
+.font-specimen__try-input {
+  width: 100%;
+  min-height: 4.5rem;
+  resize: vertical;
+  padding: 0.7rem 0.9rem;
+  border: 1.5px dashed rgba(44, 53, 64, 0.22);
+  border-radius: 0.85rem;
+  background: rgba(255, 255, 255, 0.45);
+  font-family: inherit;
+  font-size: clamp(1.35rem, 3.2vw, 1.85rem);
+  font-weight: 500;
+  line-height: 1.35;
+  color: var(--ink);
+  outline: none;
+  transition:
+    border-color 160ms ease,
+    background 160ms ease;
+}
+
+.font-specimen__try-input:focus {
+  border-color: var(--coral);
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.font-specimen__try-input::placeholder {
+  color: var(--ink-soft);
+  opacity: 0.75;
+}
+
+.font-specimen__try-hint {
+  margin: 0;
+  font-family: var(--font-ui);
+  font-size: 0.82rem;
+  line-height: 1.35;
+  color: var(--ink-soft);
+  text-align: center;
 }
 
 .font-specimen__export {

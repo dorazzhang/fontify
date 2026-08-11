@@ -4,7 +4,7 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  gap: clamp(1.75rem, 4vh, 2.75rem);
+  gap: clamp(1.5rem, 3.5vh, 2.5rem);
 }
 
 .upload-hub__eyebrow {

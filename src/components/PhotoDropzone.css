@@ -68,6 +68,69 @@
   opacity: 0.85;
 }
 
+.photo-drop__notices {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.photo-drop__notice {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.75rem;
+  align-items: start;
+  padding: 0.75rem 0.85rem;
+  border-radius: 0.75rem;
+  border: 1px solid transparent;
+}
+
+.photo-drop__notice--error {
+  background: rgba(185, 72, 72, 0.08);
+  border-color: rgba(185, 72, 72, 0.22);
+  color: #6b2c2c;
+}
+
+.photo-drop__notice--hint {
+  background: rgba(var(--accent-rgb), 0.12);
+  border-color: rgba(var(--accent-rgb), 0.35);
+  color: var(--ink);
+}
+
+.photo-drop__notice-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  min-width: 0;
+}
+
+.photo-drop__notice-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.photo-drop__notice-detail {
+  font-size: 0.84rem;
+  line-height: 1.35;
+  opacity: 0.92;
+}
+
+.photo-drop__notice-dismiss {
+  appearance: none;
+  border: none;
+  background: transparent;
+  min-height: var(--touch);
+  padding: 0 0.15rem;
+  color: inherit;
+  font-weight: 500;
+  font-size: 0.84rem;
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+  cursor: pointer;
+}
+
 .photo-drop__list {
   list-style: none;
   margin: 0;
@@ -91,6 +154,15 @@
   object-fit: cover;
   border-radius: 0.45rem;
   background: var(--paper-2);
+}
+
+.photo-drop__thumb--broken {
+  display: grid;
+  place-items: center;
+  color: var(--ink-soft);
+  font-size: 1rem;
+  font-weight: 600;
+  border: 1px dashed rgba(44, 53, 64, 0.22);
 }
 
 .photo-drop__meta {

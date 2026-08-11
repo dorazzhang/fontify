@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
+import { ComingSoonBanner } from '../components/ComingSoonBanner'
 import { UploadShell } from '../components/UploadShell'
 import './UploadHubPage.css'
 
@@ -26,6 +27,8 @@ export function UploadHubPage() {
   return (
     <UploadShell title="Upload a photo" backTo="/" backLabel="Back">
       <div className="upload-hub">
+        <ComingSoonBanner />
+
         <motion.p
           className="upload-hub__eyebrow"
           initial={{ opacity: 0, y: 10 }}

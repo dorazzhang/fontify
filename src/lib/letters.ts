@@ -4,6 +4,9 @@ export const DIGITS = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'] as cons
 
 export const SYMBOLS = ['!', '?', '#', '$', '&', '@'] as const
 
+/** Punctuation needed for pangrams / everyday typing — all drawn live */
+export const PUNCTUATION = ['.', ',', ';', ':', "'", '"', '-', '(', ')'] as const
+
 /** A, a, B, b, … Z, z */
 export function buildLetterSteps(): string[] {
   const steps: string[] = []
@@ -37,6 +40,11 @@ export function buildCaptureSteps(): CaptureStep[] {
     })),
     ...SYMBOLS.map((label) => ({
       id: `symbol-${label}`,
+      kind: 'glyph' as const,
+      label,
+    })),
+    ...PUNCTUATION.map((label) => ({
+      id: `punct-${label}`,
       kind: 'glyph' as const,
       label,
     })),

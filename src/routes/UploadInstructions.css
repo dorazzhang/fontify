@@ -22,8 +22,31 @@
 
 .upload-instr__continue {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.55rem;
   padding-top: 0.25rem;
+}
+
+.upload-instr__continue-note {
+  margin: 0.75rem 0 0;
+  max-width: 32ch;
+  margin-inline: auto;
+  text-align: center;
+  font-size: 0.88rem;
+  line-height: 1.4;
+  color: var(--ink-soft);
+}
+
+.upload-instr-stack > .upload-instr__continue-note {
+  margin-top: 1rem;
+}
+
+.upload-instr__continue-note a {
+  color: var(--coral-deep);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
 }
 
 .upload-instr-stack .upload-instr__continue {

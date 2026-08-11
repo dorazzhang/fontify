@@ -1,20 +1,13 @@
-import { useState } from 'react'
-import { AnimatePresence, motion } from 'framer-motion'
-import { useNavigate } from 'react-router-dom'
+import { motion } from 'framer-motion'
+import { Link } from 'react-router-dom'
 import { UploadShell } from '../components/UploadShell'
 import { SampleSheetExample } from '../components/SampleSheetExample'
-import { PhotoDropzone, type SelectedFile } from '../components/PhotoDropzone'
-import { PrimaryButton } from '../components/PrimaryButton'
-import { useSession } from '../state/sessionStore'
+import { ComingSoonBanner } from '../components/ComingSoonBanner'
 import './UploadInstructions.css'
 
 const PANGRAM = 'The quick brown fox jumps over the lazy dog.'
 
 export function StructuredInstructionsPage() {
-  const [files, setFiles] = useState<SelectedFile[]>([])
-  const { setPhotos, setUploadMode } = useSession()
-  const navigate = useNavigate()
-
   return (
     <UploadShell title="Structured sample" backTo="/upload" backLabel="Back">
       <motion.article
@@ -23,9 +16,11 @@ export function StructuredInstructionsPage() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
       >
+        <ComingSoonBanner compact />
+
         <p className="upload-instr__lede">
-          Photograph one clear page that includes everything below, then upload it
-          here.
+          When photo upload ships, you&apos;ll photograph one clear page that
+          includes everything below.
         </p>
 
         <ol className="upload-instr__list">
@@ -54,29 +49,9 @@ export function StructuredInstructionsPage() {
           <li>Shoot from above in even light, with all letters fully in frame</li>
         </ul>
 
-        <PhotoDropzone files={files} onChange={setFiles} />
-
-        <AnimatePresence>
-          {files.length > 0 && (
-            <motion.div
-              className="upload-instr__continue"
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 8 }}
-              transition={{ duration: 0.3 }}
-            >
-              <PrimaryButton
-                onClick={() => {
-                  setUploadMode('structured')
-                  setPhotos(files)
-                  navigate('/processing', { state: { source: 'structured' } })
-                }}
-              >
-                Continue
-              </PrimaryButton>
-            </motion.div>
-          )}
-        </AnimatePresence>
+        <p className="upload-instr__continue-note">
+          <Link to="/write">Write live</Link> to build a font now.
+        </p>
       </motion.article>
     </UploadShell>
   )

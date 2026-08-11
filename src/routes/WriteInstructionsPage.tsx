@@ -18,8 +18,8 @@ export function WriteInstructionsPage() {
         transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
       >
         <p className="upload-instr__lede">
-          Draw each character with your finger or stylus — letters, numbers,
-          a few symbols, then a sample sentence.
+          Draw every character yourself — letters, numbers, symbols, and
+          punctuation — then a sample sentence. Nothing is invented for you.
         </p>
 
         <ol className="upload-instr__list">
@@ -28,8 +28,8 @@ export function WriteInstructionsPage() {
             <span>Write Aa through Zz, one character at a time.</span>
           </li>
           <li>
-            <strong>Numbers &amp; symbols</strong>
-            <span>0–9 plus ! ? # $ &amp; @</span>
+            <strong>Numbers, symbols &amp; punctuation</strong>
+            <span>0–9, ! ? # $ &amp; @, and . , ; : &apos; &quot; - ( )</span>
           </li>
           <li>
             <strong>Sample sentence</strong>
