@@ -42,7 +42,8 @@ export function FontSpecimen({
       .load()
       .then(() => {
         if (cancelled) return
-        document.fonts.add(face)
+        // TS ~6 FontFaceSet typings omit Set methods that browsers still expose
+        ;(document.fonts as unknown as { add(font: FontFace): void }).add(face)
         setFaceReady(true)
       })
       .catch(() => {
