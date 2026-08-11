@@ -47,11 +47,16 @@ export async function buildFontFromLive(
 
   if (!res.ok) {
     let detail = `Font build failed (${res.status})`
-    try {
-      const data = (await res.json()) as { detail?: string }
-      if (data.detail) detail = data.detail
-    } catch {
-      // keep status text
+    if (res.status === 404 || res.status === 405) {
+      detail =
+        'Font API isn’t reachable from this site. Deploy the Python backend on Render and set VITE_API_BASE on Vercel to https://YOUR-SERVICE.onrender.com/api'
+    } else {
+      try {
+        const data = (await res.json()) as { detail?: string }
+        if (data.detail) detail = data.detail
+      } catch {
+        // keep status text
+      }
     }
     throw new Error(detail)
   }

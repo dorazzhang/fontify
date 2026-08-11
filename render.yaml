@@ -1,0 +1,18 @@
+# Free API hosting for Fontify (Write live → TTF).
+# Dashboard: New → Blueprint → connect this GitHub repo.
+# Or: New → Web Service → root directory `backend`.
+
+services:
+  - type: web
+    name: fontify-api
+    runtime: python
+    plan: free
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /api/health
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.12.8"
+      - key: CORS_ORIGINS
+        sync: false
